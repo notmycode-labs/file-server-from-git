@@ -7,13 +7,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run Python script
-        run: python indexer.py ./ # Replace 'your_script.py' with the path to your Python script
+        run: python indexer.py ./
       - name: Commit new files
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           ls
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "GitHub Actions"
           git add .
           git commit -m "Auto-commit new files" || echo "No changes to commit"
-          git push
-          
+          git push https://$PAT_TOKEN@github.com/notmycode-labs/file-server-from-git.git HEAD:main
