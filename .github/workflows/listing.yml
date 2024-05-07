@@ -1,4 +1,5 @@
 name: Commit Changes
+permissions: write-all
 on: [push]
 
 
