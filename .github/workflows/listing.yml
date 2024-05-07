@@ -1,13 +1,23 @@
-name: directory-listing
+name: Commit Changes
 on: [push]
 
 jobs:
-  pages-directory-listing:
+  commit_changes:
     runs-on: ubuntu-latest
-    name: Directory Listings Index
     steps:
-
-      - name: Generate Directory Listings
-        uses: jayanta525/github-pages-directory-listing@v4.0.0
-        with:
-          FOLDER: ./
+      - uses: actions/checkout@v2
+      - name: Run Python script
+        run: python indexer.py ./ # Replace 'your_script.py' with the path to your Python script
+      - name: Find new files
+        id: find_files
+        run: |
+          git diff --name-only --diff-filter=A origin/main..HEAD > files_created.txt
+      - name: Commit new files
+        if: steps.find_files.outputs.stdout != ''
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
+          git add -A
+          git commit -m "Auto-commit new files" || echo "No changes to commit"
+          git push
+          
