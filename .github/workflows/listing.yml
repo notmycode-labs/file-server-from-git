@@ -8,16 +8,12 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run Python script
         run: python indexer.py ./ # Replace 'your_script.py' with the path to your Python script
-      - name: Find new files
-        id: find_files
-        run: |
-          git diff --name-only --diff-filter=A origin/main..HEAD > files_created.txt
       - name: Commit new files
         if: steps.find_files.outputs.stdout != ''
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "GitHub Actions"
-          git add -A
+          git add .
           git commit -m "Auto-commit new files" || echo "No changes to commit"
           git push
           
