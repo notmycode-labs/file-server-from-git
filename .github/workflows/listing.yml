@@ -9,8 +9,8 @@ jobs:
       - name: Run Python script
         run: python indexer.py ./ # Replace 'your_script.py' with the path to your Python script
       - name: Commit new files
-        if: steps.find_files.outputs.stdout != ''
         run: |
+          ls
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "GitHub Actions"
           git add .
